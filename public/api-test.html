@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Testing - PERUMDAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-6 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <img src="{{ asset(images/logo-perumdam.png) }}" alt="Logo" class="h-16 mx-auto mb-4">
+                <h1 class="text-2xl font-bold text-gray-800">API Testing Console</h1>
+                <p class="text-gray-600">Sistem Pengadaan Barang/Jasa PERUMDAM Tirta Bengkayang</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-bold mb-4">Endpoint Tersedia</h2>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" onclick="fetchAPI('/api')" class="text-blue-600 hover:underline">GET /api</a> - Info API</li>
+                        <li><a href="#" onclick="fetchAPI('/api/procurements')" class="text-blue-600 hover:underline">GET /api/procurements</a> - Daftar Pengajuan</li>
+                        <li><a href="#" onclick="fetchAPI('/api/vendors')" class="text-blue-600 hover:underline">GET /api/vendors</a> - Daftar Vendor</li>
+                        <li><a href="#" onclick="fetchAPI('/api/categories')" class="text-blue-600 hover:underline">GET /api/categories</a> - Daftar Kategori</li>
+                        <li><a href="#" onclick="fetchAPI('/api/items')" class="text-blue-600 hover:underline">GET /api/items</a> - Daftar Barang</li>
+                        <li><a href="#" onclick="fetchAPI('/api/statistics')" class="text-blue-600 hover:underline">GET /api/statistics</a> - Statistik Sistem</li>
+                        <li><a href="#" onclick="fetchAPI('/api/status')" class="text-blue-600 hover:underline">GET /api/status</a> - Daftar Status</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-bold mb-4">Filter Parameters</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="font-medium">Daftar Pengajuan dengan Filter:</label>
+                            <div class="mt-2 space-x-2">
+                                <a href="#" onclick="fetchAPI('/api/procurements?year=2024')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?year=2024</a>
+                                <a href="#" onclick="fetchAPI('/api/procurements?month=5')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?month=5</a>
+                                <a href="#" onclick="fetchAPI('/api/procurements?search=PR')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?search=PR</a>
+                                <a href="#" onclick="fetchAPI('/api/procurements?per_page=5')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?per_page=5</a>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="font-medium">Daftar Vendor dengan Filter:</label>
+                            <div class="mt-2 space-x-2">
+                                <a href="#" onclick="fetchAPI('/api/vendors?search=CV')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?search=CV</a>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="font-medium">Daftar Barang dengan Filter:</label>
+                            <div class="mt-2 space-x-2">
+                                <a href="#" onclick="fetchAPI('/api/items?category_id=1')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?category_id=1</a>
+                                <a href="#" onclick="fetchAPI('/api/items?search=printer')" class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">?search=printer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6 mt-6">
+                <h2 class="text-lg font-bold mb-4">Response API</h2>
+                <div class="bg-gray-800 rounded-lg p-4 overflow-x-auto">
+                    <pre id="response" class="text-green-400 text-sm font-mono whitespace-pre-wrap">
+Klik salah satu endpoint di atas untuk melihat response JSON
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchAPI(url) {
+            const responseElement = document.getElementById('response');
+            responseElement.textContent = 'Loading...';
+            responseElement.classList.add('text-yellow-400');
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                responseElement.textContent = JSON.stringify(data, null, 2);
+                responseElement.classList.remove('text-yellow-400');
+                responseElement.classList.add('text-green-400');
+            } catch (error) {
+                responseElement.textContent = 'Error: ' + error.message;
+                responseElement.classList.remove('text-yellow-400');
+                responseElement.classList.add('text-red-400');
+            }
+        }
+    </script>
+</body>
+</html>
