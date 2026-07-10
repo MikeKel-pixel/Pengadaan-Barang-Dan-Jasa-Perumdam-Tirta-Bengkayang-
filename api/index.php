@@ -1,14 +1,12 @@
 <?php
 
-// ==================== PERBAIKAN UNTUK VERCEL ====================
-// Hapus atau comment cek environment ini
-// if (!isset($_SERVER['VERCEL']) && !isset($_SERVER['NOW'])) {
-//     die('Direct access not allowed');
-// }
+// ==================== LOAD AUTOLOAD ====================
+require __DIR__ . '/../vendor/autoload.php';
 
-// Boot Laravel
-$app = require __DIR__ . '/../bootstrap/app.php';
+// ==================== LOAD ENVIRONMENT ====================
+$app = require_once __DIR__ . '/../bootstrap/app.php';
 
+// ==================== BOOT LARAVEL ====================
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 $request = Illuminate\Http\Request::capture();
 $response = $kernel->handle($request);
