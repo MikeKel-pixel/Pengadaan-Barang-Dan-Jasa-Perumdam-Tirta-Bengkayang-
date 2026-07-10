@@ -4,7 +4,7 @@
     "builds": [
         {
             "src": "/api/index.php",
-            "use": "@vercel/php@0.7.0"
+            "use": "vercel-php@0.7.0"
         },
         {
             "src": "/public/build/assets/**",
@@ -33,7 +33,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://perumdam.vercel.app",
+        "APP_URL": "https://pengadaan-barang-dan-jasa-perumdam-tirta-bengkayang-4g65jpo3g.vercel.app",
         "LOG_CHANNEL": "stderr",
         "CACHE_DRIVER": "array",
         "SESSION_DRIVER": "array",
