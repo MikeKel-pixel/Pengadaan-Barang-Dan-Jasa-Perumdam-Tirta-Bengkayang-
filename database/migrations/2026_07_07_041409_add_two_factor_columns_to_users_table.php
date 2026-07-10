@@ -9,14 +9,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('photo')->nullable()->after('email');
+            $table->boolean('two_factor_enabled')->default(false)->after('password');
+            $table->string('two_factor_code')->nullable()->after('two_factor_enabled');
+            $table->timestamp('two_factor_expires_at')->nullable()->after('two_factor_code');
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('photo');
+            $table->dropColumn(['two_factor_enabled', 'two_factor_code', 'two_factor_expires_at']);
         });
     }
 };

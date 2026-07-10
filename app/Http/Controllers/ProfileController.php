@@ -53,8 +53,6 @@ class ProfileController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        $oldEmail = $user->email;
-        
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -62,7 +60,7 @@ class ProfileController extends Controller
 
         // Jika user adalah vendor, update juga data supplier
         if ($user->hasRole('vendor')) {
-            $supplier = Supplier::where('email', $oldEmail)->first();
+            $supplier = Supplier::where('email', $user->getOriginal('email'))->first();
             if ($supplier) {
                 $supplier->update([
                     'nama_supplier' => $request->name,
@@ -106,7 +104,7 @@ class ProfileController extends Controller
             ->with('success', 'Password berhasil diubah');
     }
 
-    // Upload foto profil
+    // ==================== UPLOAD FOTO PROFIL (DIPERBAIKI) ====================
     public function uploadPhoto(Request $request)
     {
         $request->validate([
@@ -124,12 +122,13 @@ class ProfileController extends Controller
         $fileName = time() . '_' . $user->id . '.' . $request->photo->extension();
         $request->photo->storeAs('public/photos', $fileName);
 
+        // Update database
         $user->update(['photo' => $fileName]);
 
         return back()->with('success', 'Foto profil berhasil diupload');
     }
 
-    // Hapus foto profil
+    // ==================== HAPUS FOTO PROFIL ====================
     public function deletePhoto()
     {
         $user = Auth::user();

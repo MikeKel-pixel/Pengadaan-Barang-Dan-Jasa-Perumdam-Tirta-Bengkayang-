@@ -10,8 +10,12 @@ return new class extends Migration
     {
         Schema::create('vendor_quotes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('procurement_request_id')->constrained()->onDelete('cascade');
-            $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
+            $table->foreignId('procurement_request_id')
+                  ->constrained('procurement_requests')
+                  ->onDelete('cascade');
+            $table->foreignId('supplier_id')
+                  ->constrained('suppliers')
+                  ->onDelete('cascade');
             $table->decimal('total_penawaran', 15, 2);
             $table->text('keterangan')->nullable();
             $table->boolean('status_terpilih')->default(false);

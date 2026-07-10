@@ -70,6 +70,7 @@
         @endif
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- === KOLOM KIRI: FOTO & INFO SINGKAT === -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-lg shadow p-6 text-center">
                     <div class="mb-4">
@@ -102,7 +103,9 @@
                 </div>
             </div>
 
+            <!-- === KOLOM KANAN: PROFIL & KEAMANAN === -->
             <div class="lg:col-span-2">
+                <!-- Informasi Profil -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-bold">Informasi Profil</h2>
@@ -131,7 +134,9 @@
                     </div>
                 </div>
 
-                <!-- ==================== CARD KEAMANAN AKUN (DENGAN 2FA) ==================== -->
+                <!-- ========================================================== -->
+                <!-- CARD KEAMANAN AKUN (DENGAN 2FA) -->
+                <!-- ========================================================== -->
                 <div class="bg-white rounded-lg shadow p-6 mt-6">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-bold">
@@ -171,6 +176,7 @@
                     @endif
                 </div>
 
+                <!-- Data Supplier (khusus vendor) -->
                 @if($userRole == 'vendor' && isset($supplier) && $supplier)
                 <div class="bg-white rounded-lg shadow p-6 mt-6">
                     <h2 class="text-xl font-bold mb-4">Data Supplier</h2>

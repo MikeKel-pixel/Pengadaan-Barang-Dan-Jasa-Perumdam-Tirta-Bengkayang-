@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorController extends Controller
 {
@@ -17,51 +16,27 @@ class TwoFactorController extends Controller
     public function setup()
     {
         $user = Auth::user();
-        
-        if (!$user->two_factor_secret) {
-            $user->generateTwoFactorSecret();
-        }
-        
-        $qrCodeUrl = $user->getTwoFactorQrCodeUrl();
-        $recoveryCodes = $user->getRecoveryCodes();
-        
-        return view('profile.two-factor-setup', compact('qrCodeUrl', 'recoveryCodes'));
+        return view('profile.two-factor-setup', compact('user'));
     }
 
-    // Confirm 2FA setup
-    public function confirm(Request $request)
+    // Aktifkan 2FA
+    public function enable(Request $request)
     {
-        $request->validate([
-            'code' => 'required|string|size:6'
-        ]);
-
         $user = Auth::user();
-        
-        if ($user->confirmTwoFactor($request->code)) {
-            return redirect()->route('profile.index')
-                ->with('success', '✅ Two Factor Authentication berhasil diaktifkan!');
-        }
+        $user->enableTwoFactor();
 
-        return back()->with('error', '❌ Kode verifikasi tidak valid. Silakan coba lagi.');
+        return redirect()->route('profile.index')
+            ->with('success', '✅ Two Factor Authentication berhasil diaktifkan!');
     }
 
-    // Disable 2FA
+    // Nonaktifkan 2FA
     public function disable(Request $request)
     {
         $user = Auth::user();
         $user->disableTwoFactor();
-        
+
         return redirect()->route('profile.index')
             ->with('success', '❌ Two Factor Authentication berhasil dinonaktifkan.');
-    }
-
-    // Regenerate recovery codes
-    public function regenerateRecoveryCodes()
-    {
-        $user = Auth::user();
-        $user->regenerateRecoveryCodes();
-        
-        return back()->with('success', '✅ Kode pemulihan berhasil diperbarui.');
     }
 
     // Halaman verifikasi 2FA saat login
@@ -70,7 +45,7 @@ class TwoFactorController extends Controller
         return view('auth.two-factor-verify');
     }
 
-    // Proses verifikasi 2FA saat login
+    // Proses verifikasi 2FA
     public function verify(Request $request)
     {
         $request->validate([
@@ -78,10 +53,16 @@ class TwoFactorController extends Controller
         ]);
 
         $user = Auth::user();
-        
-        if ($user->verifyTwoFactor($request->code)) {
+
+        // Cek kode 2FA
+        if ($user->verifyTwoFactorCode($request->code)) {
+            // Hapus kode setelah digunakan
+            $user->clearTwoFactorCode();
+
+            // Set session bahwa user sudah lolos 2FA
             session(['two_factor_verified' => true]);
-            
+
+            // Redirect berdasarkan role
             if ($user->hasRole('admin')) {
                 return redirect('/admin');
             } elseif ($user->hasRole('pengadaan')) {
@@ -93,10 +74,19 @@ class TwoFactorController extends Controller
             } elseif ($user->hasRole('user')) {
                 return redirect('/user-dashboard');
             }
-            
+
             return redirect('/dashboard');
         }
 
         return back()->with('error', '❌ Kode verifikasi tidak valid. Silakan coba lagi.');
+    }
+
+    // Kirim ulang kode 2FA
+    public function resend()
+    {
+        $user = Auth::user();
+        $user->sendTwoFactorCode();
+
+        return back()->with('info', '📧 Kode verifikasi baru telah dikirim ke email Anda.');
     }
 }

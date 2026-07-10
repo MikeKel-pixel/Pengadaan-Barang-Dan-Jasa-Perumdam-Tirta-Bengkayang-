@@ -8,23 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('approvals', function (Blueprint $table) {
+        Schema::create('procurement_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('procurement_request_id')
-                  ->constrained()
+                  ->constrained('procurement_requests')
                   ->onDelete('cascade');
-            $table->foreignId('user_id')
-                  ->constrained()
+            $table->foreignId('item_id')
+                  ->constrained('items')
                   ->onDelete('cascade');
-            $table->enum('status', ['disetujui', 'ditolak']);
-            $table->text('catatan')->nullable();
-            $table->datetime('tanggal_approval');
+            $table->integer('jumlah');
+            $table->decimal('harga_estimasi', 15, 2);
+            $table->decimal('subtotal', 15, 2);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('approvals');
+        Schema::dropIfExists('procurement_details');
     }
 };

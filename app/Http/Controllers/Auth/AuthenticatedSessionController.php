@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,15 +28,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // ==================== CEK 2FA & REDIRECT ====================
         $user = Auth::user();
-        
-        // Jika user memiliki 2FA aktif, redirect ke halaman verifikasi
+
+        // ==================== CEK 2FA ====================
         if ($user->hasTwoFactorEnabled()) {
-            return redirect()->route('two-factor.verify');
+            // Kirim kode 2FA ke email
+            $user->sendTwoFactorCode();
+
+            // Redirect ke halaman verifikasi 2FA
+            return redirect()->route('two-factor.verify')
+                ->with('info', 'Kode verifikasi telah dikirim ke email Anda. Masukkan kode tersebut untuk melanjutkan.');
         }
-        
-        // Jika tidak, redirect sesuai role
+
+        // Jika tidak pakai 2FA, langsung redirect sesuai role
+        return $this->redirectBasedOnRole($user);
+    }
+
+    /**
+     * Redirect berdasarkan role user
+     */
+    protected function redirectBasedOnRole($user): RedirectResponse
+    {
         if ($user->hasRole('admin')) {
             return redirect('/admin');
         } elseif ($user->hasRole('pengadaan')) {
@@ -49,8 +60,8 @@ class AuthenticatedSessionController extends Controller
         } elseif ($user->hasRole('user')) {
             return redirect('/user-dashboard');
         }
-        
-        return redirect()->intended(RouteServiceProvider::HOME);
+
+        return redirect('/dashboard');
     }
 
     /**

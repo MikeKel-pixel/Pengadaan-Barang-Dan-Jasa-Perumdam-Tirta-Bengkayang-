@@ -287,3 +287,15 @@ Route::middleware(['auth', 'two-factor'])->group(function () {
     Route::get('/vendor', [DashboardController::class, 'vendorDashboard'])->name('vendor.dashboard');
     Route::get('/user-dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 });
+
+// ==================== ROUTE 2FA ====================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/two-factor/setup', [App\Http\Controllers\TwoFactorController::class, 'setup'])->name('two-factor.setup');
+    Route::post('/two-factor/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('two-factor.enable');
+    Route::post('/two-factor/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    Route::post('/two-factor/resend', [App\Http\Controllers\TwoFactorController::class, 'resend'])->name('two-factor.resend');
+});
+
+// Route 2FA saat login (tidak pakai auth agar tidak infinite loop)
+Route::get('/two-factor/verify', [App\Http\Controllers\TwoFactorController::class, 'verifyForm'])->name('two-factor.verify');
+Route::post('/two-factor/verify', [App\Http\Controllers\TwoFactorController::class, 'verify'])->name('two-factor.verify.submit');

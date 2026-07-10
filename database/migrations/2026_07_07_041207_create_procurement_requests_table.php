@@ -11,16 +11,11 @@ return new class extends Migration
         Schema::create('procurement_requests', function (Blueprint $table) {
             $table->id();
             $table->string('kode_pengajuan')->unique();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->date('tanggal_pengajuan');
             $table->decimal('total_estimasi', 15, 2)->default(0);
             $table->enum('status', [
-                'draft',
-                'diajukan',
-                'disetujui',
-                'ditolak',
-                'diproses',
-                'selesai'
+                'draft', 'diajukan', 'disetujui', 'ditolak', 'diproses', 'selesai'
             ])->default('draft');
             $table->text('keterangan')->nullable();
             $table->timestamps();
