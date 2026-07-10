@@ -1,9 +1,10 @@
 <?php
 
-// Cek environment Vercel
-if (!isset($_SERVER['VERCEL']) && !isset($_SERVER['NOW'])) {
-    die('Direct access not allowed');
-}
+// ==================== PERBAIKAN UNTUK VERCEL ====================
+// Hapus atau comment cek environment ini
+// if (!isset($_SERVER['VERCEL']) && !isset($_SERVER['NOW'])) {
+//     die('Direct access not allowed');
+// }
 
 // Boot Laravel
 $app = require __DIR__ . '/../bootstrap/app.php';
