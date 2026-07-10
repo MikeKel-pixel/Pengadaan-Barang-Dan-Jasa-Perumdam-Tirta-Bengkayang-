@@ -41,6 +41,31 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+// ==================== TAMBAHKAN INI UNTUK VERCEL ====================
+// Trust all proxies (Vercel uses proxies for SSL/load balancing)
+$app->make(Illuminate\Contracts\Http\Kernel::class)->prependMiddlewareToGroup(
+    'web',
+    Illuminate\Http\Middleware\TrustProxies::class
+);
+
+// Atau bisa juga dengan cara ini (alternatif):
+/*
+use Illuminate\Http\Request;
+use Illuminate\Http\Middleware\TrustProxies;
+
+$app->afterResolving(TrustProxies::class, function ($middleware) {
+    $middleware->setProxies('*');
+    $middleware->setHeaders(
+        Request::HEADER_X_FORWARDED_FOR |
+        Request::HEADER_X_FORWARDED_HOST |
+        Request::HEADER_X_FORWARDED_PORT |
+        Request::HEADER_X_FORWARDED_PROTO |
+        Request::HEADER_X_FORWARDED_AWS_ELB
+    );
+});
+*/
+// ================================================================
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
