@@ -1,21 +1,13 @@
 {
     "version": 2,
-    "framework": null,
-    "functions": {
-        "api/index.php": {
-            "runtime": "nodejs20.x",
-            "memory": 1024,
-            "maxDuration": 10
-        }
-    },
     "builds": [
         {
             "src": "api/index.php",
-            "use": "php"
+            "use": "@vercel/php"
         },
         {
             "src": "public/**",
-            "use": "static"
+            "use": "@vercel/static"
         }
     ],
     "routes": [
@@ -23,20 +15,5 @@
             "src": "/(.*)",
             "dest": "api/index.php"
         }
-    ],
-    "outputDirectory": "public",
-    "env": {
-        "APP_ENV": "production",
-        "APP_DEBUG": "false",
-        "APP_URL": "https://pengadaan-barang-dan-jasa-perundam-titra-bengkayang-4jkhwLmv8.vercel.app",
-        "LOG_CHANNEL": "stderr",
-        "CACHE_DRIVER": "array",
-        "SESSION_DRIVER": "array",
-        "APP_CONFIG_CACHE": "/tmp/config.php",
-        "APP_EVENTS_CACHE": "/tmp/events.php",
-        "APP_PACKAGES_CACHE": "/tmp/packages.php",
-        "APP_ROUTES_CACHE": "/tmp/routes.php",
-        "APP_SERVICES_CACHE": "/tmp/services.php",
-        "VIEW_COMPILED_PATH": "/tmp"
-    }
+    ]
 }
