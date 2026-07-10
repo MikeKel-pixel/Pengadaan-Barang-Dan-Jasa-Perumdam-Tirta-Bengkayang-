@@ -1,38 +1,27 @@
 {
     "version": 2,
+    "framework": null,
     "builds": [
         {
-            "src": "/api/index.php",
-            "use": "@vercel/community-php@0.1.0"
+            "src": "api/index.php",
+            "use": "php"
         },
         {
-            "src": "/public/build/assets/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "/public/**",
-            "use": "@vercel/static"
+            "src": "public/**",
+            "use": "static"
         }
     ],
     "routes": [
         {
-            "src": "/build/assets/(.*)",
-            "dest": "/public/build/assets/$1"
-        },
-        {
-            "src": "/favicon.ico",
-            "dest": "/public/favicon.ico"
-        },
-        {
             "src": "/(.*)",
-            "dest": "/api/index.php"
+            "dest": "api/index.php"
         }
     ],
     "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://pengadaan-barang-dan-jasa-perumdam-tirta-bengkayang-8njzq7v22.vercel.app",
+        "APP_URL": "https://pengadaan-barang-dan-jasa-perundam-titra-bengkayang-4jkhwLmv8.vercel.app",
         "LOG_CHANNEL": "stderr",
         "CACHE_DRIVER": "array",
         "SESSION_DRIVER": "array",

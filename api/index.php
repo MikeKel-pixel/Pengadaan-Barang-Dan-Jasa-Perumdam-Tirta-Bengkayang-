@@ -1,6 +1,6 @@
 <?php
 
-// Verifikasi dari Vercel
+// Cek environment Vercel
 if (!isset($_SERVER['VERCEL']) && !isset($_SERVER['NOW'])) {
     die('Direct access not allowed');
 }
