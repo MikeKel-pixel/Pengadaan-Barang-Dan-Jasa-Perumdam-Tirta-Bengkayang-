@@ -1,3 +1,14 @@
 {
+    "functions": {
+        "api/index.php": {
+            "runtime": "php@8.3"
+        }
+    },
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "api/index.php"
+        }
+    ],
     "outputDirectory": "public"
 }
