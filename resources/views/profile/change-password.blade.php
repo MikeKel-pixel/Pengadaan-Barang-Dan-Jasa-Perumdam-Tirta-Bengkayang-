@@ -34,7 +34,7 @@
                     <a href="{{ $dashboardRoute }}" class="text-xl font-bold">PERUMDAM - Ganti Password</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('profile.index') }}" class="hover:text-blue-200">
+                    <a href="{{ route('profile.index') }}" class="hover:opacity-75">
                         <i class="fas fa-user-circle text-xl"></i>
                     </a>
                     <span>Halo, {{ Auth::user()->name }}</span>
@@ -42,7 +42,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">
-                            <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                            Logout
                         </button>
                     </form>
                 </div>
@@ -60,7 +60,7 @@
 
         @if(session('error'))
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
+                {{ session('error') }}
             </div>
         @endif
 
@@ -72,14 +72,14 @@
                 </p>
             </div>
 
-            <form action="{{ route('profile.change-password') }}" method="POST">
+            <form action="{{ route('profile.change-password.update') }}" method="POST">
                 @csrf
                 @method('PUT')
                 
                 <div class="mb-4">
                     <label for="current_password" class="block text-gray-700 font-bold mb-2">Password Saat Ini *</label>
                     <input type="password" name="current_password" id="current_password" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                            placeholder="Masukkan password Anda saat ini" required>
                     @error('current_password')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -89,7 +89,7 @@
                 <div class="mb-4">
                     <label for="new_password" class="block text-gray-700 font-bold mb-2">Password Baru *</label>
                     <input type="password" name="new_password" id="new_password" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                            placeholder="Minimal 6 karakter" required>
                     <p class="text-gray-500 text-xs mt-1">Minimal 6 karakter, gunakan kombinasi huruf dan angka</p>
                     @error('new_password')
@@ -100,7 +100,7 @@
                 <div class="mb-4">
                     <label for="new_password_confirmation" class="block text-gray-700 font-bold mb-2">Konfirmasi Password Baru *</label>
                     <input type="password" name="new_password_confirmation" id="new_password_confirmation" 
-                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                            placeholder="Ketik ulang password baru" required>
                 </div>
 
@@ -110,17 +110,6 @@
                     </button>
                 </div>
             </form>
-        </div>
-
-        <div class="bg-gray-100 border border-gray-300 p-4 mt-6 max-w-lg mx-auto rounded-lg">
-            <h4 class="font-bold text-gray-700 mb-2">Tips Password Aman:</h4>
-            <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside">
-                <li>Gunakan minimal 8 karakter</li>
-                <li>Kombinasikan huruf besar, huruf kecil, angka, dan simbol</li>
-                <li>Jangan gunakan informasi pribadi seperti tanggal lahir</li>
-                <li>Jangan gunakan password yang sama untuk akun lain</li>
-                <li>Ganti password secara berkala (minimal 3 bulan sekali)</li>
-            </ul>
         </div>
     </div>
 </body>
