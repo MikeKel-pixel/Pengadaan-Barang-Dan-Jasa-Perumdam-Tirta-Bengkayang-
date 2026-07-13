@@ -127,3 +127,69 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports/vendors', [ReportController::class, 'vendorReport'])->name('reports.vendors');
     Route::get('/reports/vendors/export', [ReportController::class, 'exportVendorReport'])->name('reports.vendors.export');
 });
+
+// Route 2FA
+Route::middleware(['auth'])->group(function () {
+    Route::get('/two-factor/setup', [App\Http\Controllers\TwoFactorController::class, 'setup'])->name('two-factor.setup');
+    Route::post('/two-factor/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('two-factor.enable');
+    Route::post('/two-factor/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    Route::post('/two-factor/resend', [App\Http\Controllers\TwoFactorController::class, 'resend'])->name('two-factor.resend');
+});
+
+// Route 2FA saat login (tidak pakai auth agar tidak infinite loop)
+Route::get('/two-factor/verify', [App\Http\Controllers\TwoFactorController::class, 'verifyForm'])->name('two-factor.verify');
+Route::post('/two-factor/verify', [App\Http\Controllers\TwoFactorController::class, 'verify'])->name('two-factor.verify.submit');
+
+// ==================== ROUTE UNTUK VENDOR ====================
+Route::middleware(['auth', 'role:vendor'])->group(function () {
+    Route::get('/vendor', [App\Http\Controllers\VendorController::class, 'index'])->name('vendor.dashboard');
+    Route::get('/vendor/create-offer/{id}', [App\Http\Controllers\VendorController::class, 'createOffer'])->name('vendor.create-offer');
+    Route::post('/vendor/store-offer/{id}', [App\Http\Controllers\VendorController::class, 'storeOffer'])->name('vendor.store-offer');
+    Route::get('/vendor/history', [App\Http\Controllers\VendorController::class, 'history'])->name('vendor.history');
+    Route::get('/vendor/show-offer/{id}', [App\Http\Controllers\VendorController::class, 'showOffer'])->name('vendor.show-offer');
+});
+
+// ==================== ROUTE PROFIL (SEMUA ROLE) ====================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    
+    // ==================== PERBAIKAN DI SINI ====================
+    Route::get('/profile/change-password', [App\Http\Controllers\ProfileController::class, 'changePasswordForm'])->name('profile.change-password.form');
+    Route::put('/profile/change-password', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('profile.change-password.update');
+    // =============================================================
+    
+    Route::post('/profile/upload-photo', [App\Http\Controllers\ProfileController::class, 'uploadPhoto'])->name('profile.upload-photo');
+    Route::delete('/profile/delete-photo', [App\Http\Controllers\ProfileController::class, 'deletePhoto'])->name('profile.delete-photo');
+});
+
+// ==================== ROUTE PROFIL ====================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    
+    // ==================== PERBAIKI INI ====================
+    Route::get('/profile/change-password', [App\Http\Controllers\ProfileController::class, 'changePasswordForm'])->name('profile.change-password.form');
+    Route::put('/profile/change-password', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('profile.change-password.update');
+    // ====================================================
+    
+    Route::post('/profile/upload-photo', [App\Http\Controllers\ProfileController::class, 'uploadPhoto'])->name('profile.upload-photo');
+    Route::delete('/profile/delete-photo', [App\Http\Controllers\ProfileController::class, 'deletePhoto'])->name('profile.delete-photo');
+});
+
+// ==================== ROUTE PROFIL ====================
+Route::middleware(['auth'])->group(function () {
+    // ==================== PERBAIKI DENGAN NAMA UNIK ====================
+    Route::get('/profile/change-password', [App\Http\Controllers\ProfileController::class, 'changePasswordForm'])->name('profile.change-password.form');
+    Route::put('/profile/change-password', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('profile.change-password.update');
+    // ================================================================
+    
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/upload-photo', [App\Http\Controllers\ProfileController::class, 'uploadPhoto'])->name('profile.upload-photo');
+    Route::delete('/profile/delete-photo', [App\Http\Controllers\ProfileController::class, 'deletePhoto'])->name('profile.delete-photo');
+});
+

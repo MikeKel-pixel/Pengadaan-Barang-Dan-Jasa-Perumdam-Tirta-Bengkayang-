@@ -143,9 +143,11 @@
                             <i class="fas fa-shield-alt text-blue-600 mr-2"></i>Keamanan Akun
                         </h2>
                         <div class="space-x-2 flex flex-wrap gap-2">
-                            <a href="{{ route('profile.change-password') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
+                            <!-- ==================== PERBAIKAN DI SINI ==================== -->
+                            <a href="{{ route('profile.change-password.form') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
                                 <i class="fas fa-key mr-2"></i>Ganti Password
                             </a>
+                            <!-- =========================================================== -->
                             <a href="{{ route('two-factor.setup') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">
                                 <i class="fas fa-shield-alt mr-2"></i>
                                 @if(Auth::user()->hasTwoFactorEnabled())
