@@ -11,7 +11,7 @@ class LandingController extends Controller
 {
     public function index()
     {
-        // ========== PASTIKAN SEMUA VARIABEL DIKIRIM ==========
+        // ========== AMBIL DATA ==========
         $totalProcurements = ProcurementRequest::where('status', 'selesai')->count();
         $totalSuppliers = Supplier::count();
         $totalCategories = Category::count();
@@ -22,6 +22,7 @@ class LandingController extends Controller
                             ->limit(6)
                             ->get();
 
+        // ========== KIRIM KE VIEW ==========
         return view('landing.index', [
             'totalProcurements' => $totalProcurements,
             'totalSuppliers' => $totalSuppliers,
