@@ -196,3 +196,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', function () {
     return view('landing.index');
 });
+
+Route::get('/up', function () {
+    return response()->json(['status' => 'ok']);
+});
