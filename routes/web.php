@@ -193,3 +193,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile/delete-photo', [App\Http\Controllers\ProfileController::class, 'deletePhoto'])->name('profile.delete-photo');
 });
 
+Route::get('/', function () {
+    return view('landing.index');
+});
