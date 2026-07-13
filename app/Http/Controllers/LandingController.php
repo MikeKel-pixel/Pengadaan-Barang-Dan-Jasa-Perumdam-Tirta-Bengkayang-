@@ -11,23 +11,37 @@ class LandingController extends Controller
 {
     public function index()
     {
-        // Statistik untuk landing page
+        // ========== PASTIKAN SEMUA VARIABEL DIKIRIM ==========
         $totalProcurements = ProcurementRequest::where('status', 'selesai')->count();
         $totalSuppliers = Supplier::count();
         $totalCategories = Category::count();
 
-        // Pengajuan terbaru yang sudah selesai
         $recentProcurements = ProcurementRequest::with('user')
                             ->where('status', 'selesai')
                             ->latest()
                             ->limit(6)
                             ->get();
 
-        return view('landing.index', compact(
-            'totalProcurements',
-            'totalSuppliers',
-            'totalCategories',
-            'recentProcurements'
-        ));
+        return view('landing.index', [
+            'totalProcurements' => $totalProcurements,
+            'totalSuppliers' => $totalSuppliers,
+            'totalCategories' => $totalCategories,
+            'recentProcurements' => $recentProcurements
+        ]);
+    }
+
+    public function about()
+    {
+        return view('landing.about');
+    }
+
+    public function services()
+    {
+        return view('landing.services');
+    }
+
+    public function contact()
+    {
+        return view('landing.contact');
     }
 }
